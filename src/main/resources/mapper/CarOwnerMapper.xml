@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ldblock.carid.dao.CarOwnerMapper">
+	
+	<select id="query" resultType="carOwner">
+		SELECT * FROM t_car_owner 
+		<where>
+			<if test="query.carNo != null and query.carNo != ''">
+				t_car_owner.car_no = #{query.carNo}
+			</if>
+			<if test="query.ownerId != null and query.ownerId !=''">
+				AND t_car_owner.owner_id = #{query.ownerId}
+			</if>
+		</where>
+		order by t_car_owner.id DESC
+	</select>
+
+</mapper>

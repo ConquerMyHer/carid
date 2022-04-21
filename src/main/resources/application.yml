@@ -1,0 +1,121 @@
+server:
+  port : 8080
+  tomcat:
+    maxThreads: 500    #设定tomcat的最大工作线程数，默认为: 200
+    maxHttpHeaderSize: 8192  #设定http header的最小值，默认: 0
+    uriEncoding: utf-8  #设定URI的解码字符集.
+  
+spring:
+  application:
+    name: car-id
+  mvc:  #springboot2.6.0 swagger配置需要
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  datasource:
+    #JDBC数据源配置，单数据源，druid可以使用jdbc配置
+    url: jdbc:mysql://127.0.0.1:3306/carid?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useUnicode=true&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    username: root
+    password: Hch99999
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #springboot 默认连接池，据说比druid快
+    hikari: 
+      connectionTimeout: 30000
+      idleTimeout: 300000
+      minimumIdle: 5
+      maximumPoolSize: 10
+      maxLifetime: 1800000
+  # redis配置后会自动配置
+  redis:
+    #database: 0 #Database index used by the connection factory
+    #url:  #Connection URL. Overrides host, port, and password. User is ignored. Example:redis://user:password@example.com:6379
+    host: 127.0.0.1  #default "localhost"
+    port: 6379
+    #userName:
+    password: hk666
+    ssl: false
+    #timeout:  #读超时
+    #connectTimeout:  #连接超时
+    #clientName: #
+    clientType: lettuce #或jedis,设置客户端连接的类型
+    #sentinel:
+      #master:
+      #nodes:  #Comma-separated list of "host:port" pairs
+      #password:
+    #cluster:
+      #nodes:  #Comma-separated list of "host:port" pairs
+      #max-redirects:
+    lettuce:  #推荐使用lettuce而不是jedis，以下是配置连接池
+      pool:
+        max-active: 10  # 连接池最大连接数（使用负值表示没有限制）
+        #timeBetweenEvictionRuns: 3000
+        #max-wait:  ${spring.redis.pool.max-wait-millis} # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 10  # 连接池中的最大空闲连接
+        min-idle: 1 # 连接池中的最小空闲连接
+      shutdownTimeout: 3000     # 连接超时时间（毫秒）
+      #cluster:
+        #refresh:
+          #dynamicRefreshSources: true
+          #period: 3000
+          #adaptive: false
+
+#mybatis:  #不引入plus时，使用mybatis-spring-boot-starter来配置
+mybatisPlus:  #引入plus时，
+  #configLocation:
+  #checkConfigLocation:
+  mapperLocations: classpath:mapper/*.xml
+  typeAliasesPackage: com.ldblock.carid.data.po
+  #typeAliasesSuperType: 
+  #typeHandlersPackage: com.ldblock.commons.mybatis.typehandler
+  typeEnumsPackage: com.ldblock.carid.data.pojo.enums
+  executorType: REUSE #SIMPLE, REUSE, BATCH
+  #defaultScriptingLanguageDriver:
+  #configurationProperties:
+  #lazyInitialization:
+  #mapperDefaultScope:
+  configuration: #mybaties的属性配置
+    mapUnderscoreToCamelCase: true
+    defaultFetchSize: 100
+    defaultStatementTimeout: 30
+  #scriptingLanguageDriver:
+    #thymeleaf:
+      #*:
+    #freemarker:
+      #*:
+    #velocity:
+      #*:
+  globalConfig: #plus的配置
+    banner: false  #是否控制台 print mybatis-plus 的 LOGO
+    #enableSqlRunner: false  #是否初始化 SqlRunner
+    #superMapperClass: com.baomidou.mybatisplus.core.mapper.Mapper.class  #通用Mapper父类(影响sqlInjector,只有这个的子类的 mapper 才会注入 sqlInjector 内的 method)
+    #metaObjectHandler:  #元对象字段填充控制器(starter 下支持@bean注入)
+  dbConfig: #plus的配置
+    #idType: ASSIGN_ID  #全局默认主键类型
+    #tablePrefix:  #表名前缀
+    #schema:     #schema
+    #columnFormat:  #字段 format,例: %s,(对主键无效)
+    #propertyFormat: #entity 的字段(property)的 format,只有在 column as property 这种情况下生效例: %s,(对主键无效) 
+    tableUnderline: true #表名是否使用驼峰转下划线命名,只对表名生效
+    #capitalMode: false #大写命名,对表名和字段名均生效
+    #keyGenerator: #表主键生成器(starter 下支持@bean注入)
+    logicDeleteField: deleted #全局的entity的逻辑删除字段属性名,(逻辑删除下有效)
+    logicDeleteValue: 1
+    logicNotDeleteValue: 0
+    #insertStrategy: #字段验证策略之 insert,在 insert 的时候的字段验证策略
+    #updateStrategy: #字段验证策略之 update,在 update 的时候的字段验证策略
+    #selectStrategy: #字段验证策略之 select,在 select 的时候的字段验证策略既 wrapper 根据内部 entity 生成的 where 条件
+
+#log
+logging:
+  path:
+    name: ./logs
+  level:
+    root: INFO
+    
+#jwt
+jwt:
+  tokenExpirationTime: 3000 # Number of minutes
+  refreshTokenExpTime: 3000000 # Minutes
+  tokenIssuer: ldlbock.com
+  tokenSigningKey: xm8EV6Hy5RMFK4EEACIDAwQus
+    
+
