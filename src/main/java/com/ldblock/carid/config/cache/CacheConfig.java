@@ -6,8 +6,10 @@ import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheManager.RedisCacheManagerBuilder;
 import org.springframework.data.redis.cache.RedisCacheWriter;
+import org.springframework.data.redis.connection.RedisConfiguration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
@@ -37,12 +39,21 @@ public class CacheConfig {
 				.serializeValuesWith(pair).entryTtl(Duration.ofHours(24));
 
 		//配置特定缓存的缓存时间
+        //配置cahce_auth_code缓存时间为5分钟
 		CacheManager cacheManager = RedisCacheManagerBuilder.fromConnectionFactory(redisConnectionFactory)
 				.cacheWriter(redisCacheWriter).cacheDefaults(defaultCacheConfig)
+                .withCacheConfiguration("cache_auth_code", RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(5)))
 				.build();
 
 		return cacheManager;
 	}
+
+//    // 设置redis其他的缓存时间类型
+//    public RedisCacheManager cacheManager5Minutes(RedisConnectionFactory redisConnectionFactory) {
+//        RedisConfiguration redisConfiguration =
+//    }
+
+
 
     @Bean
     public KeyGenerator keyGenerator() {

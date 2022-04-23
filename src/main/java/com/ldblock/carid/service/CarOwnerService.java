@@ -53,7 +53,7 @@ public class CarOwnerService {
 //        return carOwnerMapper.selectById(id);
 //    }
 
-//    @Cacheable(cacheNames = "carOwnerInfo", key = "#userId")
+    @Cacheable(cacheNames = "carOwnerInfo", key = "#userId")
     public CarOwner getByOwnerId(Integer userId) {
     	return carOwnerMapper.selectByOwnerId(userId);
     }
