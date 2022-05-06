@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+/**
+ * @author Chang Han
+ */
 @Data
 @TableName("app_authority")
 public class AppAuthority {

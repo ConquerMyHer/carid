@@ -28,7 +28,7 @@ public class AppAuthCodeController {
     public AuthCodeResponse requestAppAuthCode(AppAuthCodeBo appAuthCodeBo) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserContext userContext = (UserContext) authentication.getPrincipal();
-        return appAuthCodeService.getAuthCode(appAuthCodeBo, userContext.getId());
+        return appAuthCodeService.getAuthCode(appAuthCodeBo, userContext.getId().toString());
 //        return "success";
     }
 }

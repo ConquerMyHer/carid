@@ -11,4 +11,7 @@ public interface AppInfoMapper extends BaseMapper<AppInfo> {
 
     @Select("select * from app_info where app_id = #{appId} limit 1")
     AppInfo selectByAppId(@Param("appId") String appId);
+
+    @Select("select * from app_info where app_id = #{appId} and app_secret = #{secret} limit 1")
+    AppInfo selectByAppIdAndSecret(@Param("appId") String appId, @Param("secret") String secret);
 }
