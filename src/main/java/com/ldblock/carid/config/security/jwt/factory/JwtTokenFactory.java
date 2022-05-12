@@ -4,7 +4,11 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ldblock.carid.config.security.AccessTokenContext;
+import com.ldblock.carid.config.security.OpenContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -88,4 +92,22 @@ public class JwtTokenFactory {
         return token;
     }
 
+
+    // 解析token
+    public OpenContext parseToken(String token) {
+        try {
+            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(jwtProperties.getTokenSigningKey()))
+                    .withIssuer(jwtProperties.getTokenIssuer())
+                    .build();
+            DecodedJWT jwt = verifier.verify(token);
+            String subject = jwt.getSubject();
+            String openid = jwt.getClaim("openid").asString();
+            OpenContext openContext = new OpenContext();
+            openContext.setOpenid(openid);
+            openContext.setUserName(subject);
+            return openContext;
+        } catch (JWTVerificationException e) {
+            throw new RuntimeException("token无效");
+        }
+    }
 }
