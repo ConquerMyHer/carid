@@ -12,6 +12,10 @@ public interface OpenPlatformInfoMapper extends BaseMapper<OpenPlatformInfo> {
     @Select("select open_id from open_platform_info where user_id = #{userId} and app_id = #{appId}")
     String getOpenIdByUserIdAndAppId(@Param("userId") String userId, @Param("appId") String appId);
 
+    // 根据open_id和app_id查询open_platform_info表中的数据
+    @Select("select * from open_platform_info where open_id = #{openId} and app_id = #{appId}")
+    OpenPlatformInfo getOpenPlatformInfoByOpenIdAndAppId(@Param("openId") String openId, @Param("appId") String appId);
+
     @Select("select scope from open_platform_info where user_id = #{userId} and app_id = #{appId}")
     String getScopeByUserIdAndAppId(@Param("userId") String userId, @Param("appId") String appId);
 

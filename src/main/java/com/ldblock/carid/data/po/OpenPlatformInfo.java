@@ -18,7 +18,7 @@ public class OpenPlatformInfo {
 
     private String appId;
 
-    private String userId;
+    private Integer userId;
 
     private String openId;
 
